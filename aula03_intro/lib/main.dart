@@ -28,52 +28,98 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Tip tip = new Tip();
+  Tip t = new Tip();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Demo Click Counter'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextFormField(
-              initialValue: tip.amount,
-              keyboardType: TextInputType.number,
-              onChanged: (String x) {
-                setState(() {
-                  tip.amount = x;
-                });
-              },
-              decoration: const InputDecoration(labelText: 'Valor Total'),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-              ],
-            ),
-            InputDecorator(
-                decoration:
-                    const InputDecoration(labelText: 'Gorjeta Customizada'),
-                child: Slider(
-                  min: 1,
-                  max: 20,
-                  value: double.parse(tip.customTip),
-                  onChanged: (double x) {
+        appBar: AppBar(
+          title: const Text('Flutter Demo Click Counter'),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextFormField(
+                  initialValue: t.amount,
+                  keyboardType: TextInputType.number,
+                  onChanged: (String value) {
                     setState(() {
-                      tip.customTip = x.toString();
+                      t.amount = value;
                     });
                   },
-                )),
-            Text(tip.defaultTippedAmount),
-            Text(tip.customTippedAmount),
-            Text(tip.customTip),
-            Text(tip.amountPlusDefaultTippedAmount),
-            Text(tip.amountPlusCustomTippedAmount),
-          ],
-        ),
-      ),
-    );
+                  decoration: const InputDecoration(labelText: 'Valor Total'),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
+                  ],
+                ),
+                InputDecorator(
+                  decoration:
+                      const InputDecoration(labelText: 'Gorjeta Customizada'),
+                  child: Slider(
+                    min: 1,
+                    max: 20,
+                    value: double.parse(t.customTip),
+                    onChanged: (double value) {
+                      setState(() {
+                        t.customTip = value.toString();
+                      });
+                    },
+                  ),
+                ),
+                Table(
+                  border: TableBorder.all(),
+                  columnWidths: {
+                    0: FlexColumnWidth(2),
+                    1: FlexColumnWidth(3),
+                  },
+                  children: [
+                    TableRow(children: [
+                      TableCell(child: Text('Gorjeta Padrao')),
+                      TableCell(child: Text(t.defaultTippedAmount)),
+                    ]),
+                    TableRow(children: [
+                      TableCell(child: Text('Gorjeta Customizada')),
+                      TableCell(child: Text(t.customTippedAmount)),
+                    ]),
+                    TableRow(children: [
+                      TableCell(child: Text('Valor Total + Gorjeta Padrao')),
+                      TableCell(child: Text(t.amountPlusDefaultTippedAmount)),
+                    ]),
+                    TableRow(children: [
+                      TableCell(
+                          child: Text('Valor Total + Gorjeta Customizada')),
+                      TableCell(child: Text(t.amountPlusCustomTippedAmount)),
+                    ]),
+                    TableRow(children: [
+                      TableCell(child: Text('Gorjeta por Pessoa (Padr達o)')),
+                      TableCell(child: Text(t.tipPerPersonDefault.toString())),
+                    ]),
+                    TableRow(children: [
+                      TableCell(
+                          child: Text('Gorjeta por Pessoa (Customizada)')),
+                      TableCell(child: Text(t.tipPerPersonCustom.toString())),
+                    ]),
+                    TableRow(children: [
+                      TableCell(
+                          child: Text('Gorjeta por Pessoa (Total Padr達o)')),
+                      TableCell(
+                          child:
+                              Text(t.tipPerPersonTotalTipDefault.toString())),
+                    ]),
+                    TableRow(children: [
+                      TableCell(
+                          child:
+                              Text('Gorjeta por Pessoa (Total Customizada)')),
+                      TableCell(
+                          child: Text(t.tipPerPersonTotalTipCustom.toString())),
+                    ]),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
